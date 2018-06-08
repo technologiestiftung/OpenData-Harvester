@@ -35,6 +35,15 @@ package_table = Table('package', meta.metadata,
         Column('metadata_created', types.DateTime, default=datetime.datetime.utcnow),
         Column('metadata_modified', types.DateTime, default=datetime.datetime.utcnow),
         Column('private', types.Boolean, default=False),
+        Column('berlin_type', types.UnicodeText),
+        Column('geographical_granularity', types.UnicodeText),
+        Column('temporal_granularity', types.UnicodeText),
+        Column('license_title', types.UnicodeText),
+        Column('geographical_coverage', types.UnicodeText),
+        Column('berlin_source', types.UnicodeText),
+        Column('state', types.UnicodeText),
+        Column('date_released', types.DateTime, default=datetime.datetime.utcnow),
+        Column('username', types.UnicodeText),
 )
 
 resource_table = Table(
@@ -75,4 +84,15 @@ package_tag_table = Table('package_tag', meta.metadata,
     Column('tag_id', types.UnicodeText, ForeignKey('tag.id')),
     )
 
-
+group_table = Table('group', meta.metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+    Column('name', types.UnicodeText, nullable=False, unique=True),
+    Column('title', types.UnicodeText),
+    Column('display_name', types.UnicodeText),
+    Column('type', types.UnicodeText, nullable=False),
+    Column('description', types.UnicodeText),
+    Column('image_url', types.UnicodeText),
+    Column('created', types.DateTime, default=datetime.datetime.now),
+    Column('is_organization', types.Boolean, default=False),
+    Column('approval_status', types.UnicodeText, default=u"approved")
+    )

@@ -3,3 +3,4 @@ vdm==0.14
 psycopg2
 simplejson
 six
+requests
