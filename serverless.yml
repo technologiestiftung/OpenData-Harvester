@@ -1,0 +1,27 @@
+service: opendata-berlin
+
+provider:
+  name: aws
+  runtime: python2.7
+  profile: prototypefund
+  region: eu-central-1
+  timeout: 300
+
+package:
+  include:
+    - berlin/lib/python2.7/site-packages
+    - models
+    - connect.py
+    - berlin.py
+    - importer.py
+    - handler.py
+  exclude:
+    - berlin
+
+functions:
+  load:
+    handler: handler.load_data
+  import:
+    handler: handler.import_package
+  create_db:
+    handler: handler.create_db

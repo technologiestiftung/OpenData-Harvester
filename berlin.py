@@ -3,21 +3,28 @@ import models
 import requests
 import json
 import connect
-import settings
+from sqlalchemy.dialects.postgresql import insert
 
-def gatherCity(cityname, url, apikey):
-    headers = {'Authorization': apikey}
-    r = requests.get(url + "/api/3/action/package_list", headers=headers)
-    r.encoding = 'utf-8'
-    listpackages = json.loads(r.text)
+exclude_resource =  ('resource_group_id', 'language', 'webstore_url', 'state', 'webstore_last_updated', 'revision_id', 'apiurl', 'resource_locator_function', 'resource_locator_protocol')
+exclude_tag = ('state', 'display_name')
+exclude_package =  ('isopen', 'relationships_as_object', 'num_tags', 'num_resources', 'license_url', 'resources', 'groups', 'organization', 'revision_id', 'relationships_as_subject', 'tags', 'extras')
+exclude_groups = ('image_display_url')
 
-    listpackages = listpackages['result']
+def exclude_from_dict(d, exclude):
+    return {key: d[key] for key in d if key not in exclude}
 
-    entries = []
+def insert_or_update(table, entry, unique_id, exclude):
+    con = connect.con
+    table = models.meta.metadata.tables[table]
+    clause = insert(table).values(exclude_from_dict(entry, exclude))
+    do_update_clause = clause.on_conflict_do_update(
+        index_elements=[unique_id],
+        set_=dict(exclude_from_dict(entry, exclude))
+    )
+    return con.execute(do_update_clause)
 
-    print 'INFO: the names that follow have had special characters removed'
-    for item in listpackages:
-        urltoread = url + "/api/3/action/package_show?id=" + item
+def gather_data(package_id, url, apikey):
+        urltoread = url + "/api/3/action/package_show?id=" + package_id
         headers = {'Authorization': apikey}
         r = requests.get(urltoread, headers=headers)
         pdata = {}
@@ -27,50 +34,26 @@ def gatherCity(cityname, url, apikey):
         except (RuntimeError, TypeError, NameError, ValueError):
             print('error for url {}'.format(urltoread))
         if 'success' in pdata and pdata['success']:
-            entries.append(pdata['result'])
-            break
-        else:
-            print 'WARNING: No result - access denied?\n' + metautils.findLcGermanCharsAndReplace(item)
-    return entries
+            return(pdata['result'])
 
-exclude_resource =  ('resource_group_id', 'language', 'webstore_url', 'state', 'webstore_last_updated', 'revision_id', 'apiurl')
-exclude_tag = ('state', 'display_name')
-exclude =  ('isopen', 'relationships_as_object', 'num_tags', 'num_resources', 'license_url', 'resources', 'groups', 'organization', 'revision_id', 'relationships_as_subject', 'tags', 'extras')
-exclude_groups = ('image_display_url')
+def gatherCity(cityname, url, apikey):
+    headers = {'Authorization': apikey}
+    r = requests.get(url + "/api/3/action/package_list", headers=headers)
+    r.encoding = 'utf-8'
+    listpackages = json.loads(r.text)
 
-def exclude_from_dict(d, exclude):
-    return {key: d[key] for key in d if key not in exclude}
+    return listpackages['result']
 
-def insert_package(entry):
-    package = models.meta.metadata.tables['package']
-    clause = package.insert().values(exclude_from_dict(entry, exclude))
-    con.execute(clause)
-
-def insert_resource(entry):
-    resource = models.meta.metadata.tables['resource']
-    clause = resource.insert().values(exclude_from_dict(entry, exclude_resource))
-    con.execute(clause)
-
-def insert_tag(entry):
-    tags = models.meta.metadata.tables['tag']
-    clause = tags.insert().values(exclude_from_dict(entry, exclude_tag))
-    result = con.execute(clause)
-
-def insert_group(entry):
-    groups = models.meta.metadata.tables['tag']
-    clause = groups.insert().values(exclude_from_dict(entry, exclude_groups))
-    result = con.execute(clause)
-
-apikey = settings.API_KEY
-url = settings.API_URL
-entries = gatherCity('berlin', url, apikey)
-con = connect.con
-
-for entry in entries:
-    insert_package(entry)
+def import_package(entry):
+    print(entry['type'])
+    if entry['type'] == 'harvest':
+        return
+    print(entry['id'])
+    insert_or_update('package', entry, 'id', exclude_package)
     for resource in entry['resources']:
-        insert_resource(resource)
+        insert_or_update('resource', resource, 'id', exclude_resource)
     for tag in entry['tags']:
-        insert_tag(tag)
+        insert_or_update('tag', tag, 'id', exclude_tag)
     for group in entry['groups']:
-        insert_group(group)
+        insert_or_update('group', group, 'id', exclude_groups)
+

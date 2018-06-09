@@ -43,7 +43,11 @@ package_table = Table('package', meta.metadata,
         Column('berlin_source', types.UnicodeText),
         Column('state', types.UnicodeText),
         Column('date_released', types.DateTime, default=datetime.datetime.utcnow),
+        Column('date_updated', types.DateTime, default=datetime.datetime.utcnow),
         Column('username', types.UnicodeText),
+        Column('attribution_text', types.UnicodeText),
+        Column('temporal_coverage_from', types.UnicodeText),
+        Column('temporal_coverage_to', types.UnicodeText),
 )
 
 resource_table = Table(
@@ -57,7 +61,6 @@ resource_table = Table(
     Column('description', types.UnicodeText),
     Column('hash', types.UnicodeText),
     Column('position', types.Integer),
-
     Column('name', types.UnicodeText),
     Column('resource_type', types.UnicodeText),
     Column('mimetype', types.UnicodeText),
@@ -68,6 +71,8 @@ resource_table = Table(
     Column('cache_url', types.UnicodeText),
     Column('cache_last_updated', types.DateTime),
     Column('url_type', types.UnicodeText),
+    Column('Abteilung', types.UnicodeText),
+    Column('Landesstelle', types.UnicodeText),
     Column('extras', _types.JsonDictType),
 )
 
@@ -89,7 +94,7 @@ group_table = Table('group', meta.metadata,
     Column('name', types.UnicodeText, nullable=False, unique=True),
     Column('title', types.UnicodeText),
     Column('display_name', types.UnicodeText),
-    Column('type', types.UnicodeText, nullable=False),
+    Column('type', types.UnicodeText),
     Column('description', types.UnicodeText),
     Column('image_url', types.UnicodeText),
     Column('created', types.DateTime, default=datetime.datetime.now),
