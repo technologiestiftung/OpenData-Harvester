@@ -9,14 +9,15 @@ provider:
 
 package:
   include:
-    - berlin/lib/python2.7/site-packages
     - models
     - connect.py
     - berlin.py
     - importer.py
     - handler.py
+    - requirements.txt
   exclude:
     - berlin
+    - .env
 
 functions:
   load:
@@ -25,3 +26,10 @@ functions:
     handler: handler.import_package
   create_db:
     handler: handler.create_db
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux

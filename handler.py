@@ -1,13 +1,7 @@
-import sys, os, json
-
-here = os.path.dirname(os.path.realpath(__file__))
-env_path = os.path.join(here, "./berlin/lib/python2.7/site-packages/")
-sys.path.append(env_path)
-
-
-import importer
-import connect
+from cloud import importer
+from db import connect
 import models
+import json
 
 def load_data(event, context):
     city = event['city_name']
@@ -46,5 +40,9 @@ def import_package(event, context):
     return response
 
 def create_db(event, context):
-    models.meta.metadata.create_all(connect.con)
+    result = models.meta.metadata.create_all(connect.con)
+    return {
+        "statusCode": 200,
+        "body": json.dumps(result)
+    }
 

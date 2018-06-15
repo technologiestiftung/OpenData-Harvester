@@ -1,0 +1,11 @@
+{
+  "name": "opendata-berlin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:CivicVision/opendata-berlin.git",
+  "author": "milafrerichs <mila.frerichs@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "serverless-python-requirements": "^4.0.4"
+  }
+}

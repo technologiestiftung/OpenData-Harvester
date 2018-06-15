@@ -5,3 +5,8 @@ simplejson
 six
 requests
 boto3
+python-dotenv
+httpretty
+pytest
+pytest-mock
+pytest-cov

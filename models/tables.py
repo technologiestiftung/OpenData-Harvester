@@ -89,6 +89,12 @@ package_tag_table = Table('package_tag', meta.metadata,
     Column('tag_id', types.UnicodeText, ForeignKey('tag.id')),
     )
 
+package_group_table = Table('package_group', meta.metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+    Column('package_id', types.UnicodeText, ForeignKey('package.id')),
+    Column('group_id', types.UnicodeText, ForeignKey('group.id')),
+    )
+
 group_table = Table('group', meta.metadata,
     Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
     Column('name', types.UnicodeText, nullable=False, unique=True),
