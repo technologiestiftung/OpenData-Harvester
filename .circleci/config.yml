@@ -5,6 +5,19 @@ jobs:
       - image: circleci/python:2.7.15-jessie
     steps:
       - checkout
-      - run: pip install -r requirements.txt
-      - run: pytest --cov=./
+      - restore_cache:
+          key: v1-py-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: Activate venv and install requirements
+          command: |
+            virtualenv ~/venv
+            echo ". ~/venv/bin/activate" >> $BASH_ENV
+            source $BASH_ENV
+            pip install -r requirements.txt
+      - save_cache:
+          name: Save python deps cache
+          key: v1-py-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - ~/venv
+      - run: pytest --cov=./ --assert=plain
       - run: bash <(curl -s https://codecov.io/bash)

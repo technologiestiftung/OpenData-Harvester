@@ -11,4 +11,6 @@ port = settings.DB_PORT
 db = settings.DB_NAME
 url = 'postgresql://{}:{}@{}:{}/{}'
 url = url.format(user, password, host, port, db)
-con = sqlalchemy.create_engine(url, client_encoding='utf8')
+
+def get_connection():
+    return sqlalchemy.create_engine(url, client_encoding='utf8')

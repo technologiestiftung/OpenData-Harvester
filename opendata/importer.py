@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import models
-import connect
+from db import connect
 from sqlalchemy.dialects.postgresql import insert
 
 exclude_resource =  ('resource_group_id', 'language', 'webstore_url', 'state', 'webstore_last_updated', 'revision_id', 'apiurl', 'resource_locator_function', 'resource_locator_protocol')
@@ -14,7 +14,7 @@ def exclude_from_dict(d, exclude):
     return {key: d[key] for key in d if key not in exclude}
 
 def insert_or_update(table, entry, unique_id, exclude):
-    con = connect.con
+    con = connect.get_connection()
     table = models.meta.metadata.tables[table]
     clause = insert(table).values(exclude_from_dict(entry, exclude))
     do_update_clause = clause.on_conflict_do_update(

@@ -1,4 +1,5 @@
 import httpretty
+import automock
 
 from opendata import importer, ckan
 
@@ -15,15 +16,15 @@ def test_exclude_from_dict():
 simple_package = { 'type': 'dataset', 'id': 1, 'resources': [], 'tags': [], 'groups': [] }
 simple_resource = { 'id': 1 }
 
-def test_import_package_simple(mocker):
-    mocked_insert_o_update = mocker.patch('opendata.importer.insert_or_update')
+def test_import_package_simple():
     importer.import_package(simple_package)
-    assert mocked_insert_o_update.call_count == 1
-    mocked_insert_o_update.assert_called_once_with('package', simple_package, 'id', importer.exclude_package)
+    mocked = automock.get_mock('opendata.importer.insert_or_update')
+    assert mocked.call_count == 1
+    mocked.assert_called_once_with('package', simple_package, 'id', importer.exclude_package)
 
-def test_import_package_resource(mocker):
-    mocked_insert_o_update = mocker.patch('opendata.importer.insert_or_update')
+def test_import_package_resource():
     package = { 'type': 'dataset', 'id': 1, 'resources': [simple_resource], 'tags': [], 'groups': [] }
     importer.import_package(package)
-    assert mocked_insert_o_update.call_count == 2
+    mocked = automock.get_mock('opendata.importer.insert_or_update')
+    assert mocked.call_count == 2
 
