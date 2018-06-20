@@ -12,3 +12,4 @@ mock
 pytest-mock
 pytest-cov
 automock
+BeautifulSoup4
