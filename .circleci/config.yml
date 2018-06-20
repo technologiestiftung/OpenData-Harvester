@@ -19,5 +19,5 @@ jobs:
           key: v1-py-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - ~/venv
-      - run: pytest --cov=./
+      - run: pytest --cov=./ --assert=plain
       - run: bash <(curl -s https://codecov.io/bash)
