@@ -3,8 +3,6 @@ import automock
 
 from opendata import importer, ckan
 
-automock.register('opendata.importer.insert_or_update')
-
 def test_exclude_from_dict():
     start_dict = {
             'isopen': True,
