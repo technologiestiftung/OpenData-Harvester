@@ -8,5 +8,6 @@ boto3
 python-dotenv
 httpretty
 pytest
+mock
 pytest-mock
 pytest-cov
