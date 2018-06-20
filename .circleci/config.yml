@@ -10,7 +10,7 @@ jobs:
       - run:
           name: Activate venv and install requirements
           command: |
-            python -m venv ~/venv
+            virtualenv ~/venv
             echo ". ~/venv/bin/activate" >> $BASH_ENV
             source $BASH_ENV
             pip install -r requirements.txt
