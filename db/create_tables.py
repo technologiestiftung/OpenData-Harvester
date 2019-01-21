@@ -1,4 +1,4 @@
 import connect
 import models
 
-models.meta.metadata.create_all(connect.get_connection())
+models.meta_helper.metadata.create_all(connect.get_connection())

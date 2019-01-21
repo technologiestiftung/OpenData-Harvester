@@ -41,7 +41,7 @@ def import_package(event, context):
 
 def create_db(event, context):
     con = connect.get_connection()
-    result = models.meta.metadata.create_all(con)
+    result = models.meta_helper.metadata.create_all(con)
     return {
         "statusCode": 200,
         "body": json.dumps(result)
