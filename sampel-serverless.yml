@@ -10,9 +10,9 @@ provider:
 package:
   include:
     - models
-    - db
-    - cloud
-    - opendata
+    - connect.py
+    - berlin.py
+    - importer.py
     - handler.py
     - requirements.txt
   exclude:
