@@ -1,4 +1,4 @@
-SQLAlchemy==0.9.6
+SQLAlchemy==1.1.11
 vdm==0.14
 psycopg2
 simplejson
