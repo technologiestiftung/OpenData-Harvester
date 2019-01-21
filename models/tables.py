@@ -1,4 +1,3 @@
-#import vdm.sqlalchemy
 from sqlalchemy.orm import relation
 from sqlalchemy import types, Column, Table, ForeignKey, and_, UniqueConstraint
 import datetime
