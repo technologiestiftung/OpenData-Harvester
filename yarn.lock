@@ -2,6 +2,26 @@
 # yarn lockfile v1
 
 
+appdirectory@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/appdirectory/-/appdirectory-0.1.0.tgz#eb6c816320e7b2ab16f5ed997f28d8205df56375"
+  integrity sha1-62yBYyDnsqsW9e2ZfyjYIF31Y3U=
+
+array-filter@~0.0.0:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/array-filter/-/array-filter-0.0.1.tgz#7da8cf2e26628ed732803581fd21f67cacd2eeec"
+  integrity sha1-fajPLiZijtcygDWB/SH2fKzS7uw=
+
+array-map@~0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/array-map/-/array-map-0.0.0.tgz#88a2bab73d1cf7bcd5c1b118a003f66f665fa662"
+  integrity sha1-iKK6tz0c97zVwbEYoAP2b2ZfpmI=
+
+array-reduce@~0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/array-reduce/-/array-reduce-0.0.0.tgz#173899d3ffd1c7d9383e4479525dbe278cab5f2b"
+  integrity sha1-FziZ0//Rx9k4PkR5Ul2+J4yrXys=
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -33,9 +53,10 @@ es6-promise@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.0.2.tgz#010d5858423a5f118979665f46486a95c6ee2bb6"
 
-fs-extra@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-6.0.1.tgz#8abc128f7946e310135ddc93b98bddb410e7a34b"
+fs-extra@^7.0.0:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
+  integrity sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
@@ -96,6 +117,11 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jsonify@~0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
+  integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
+
 jszip@^3.1.0:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.1.5.tgz#e3c2a6c6d706ac6e603314036d43cd40beefdf37"
@@ -127,6 +153,11 @@ lodash.uniqby@^4.0.0:
 lodash.values@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
+
+md5-file@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/md5-file/-/md5-file-4.0.0.tgz#f3f7ba1e2dd1144d5bf1de698d0e5f44a4409584"
+  integrity sha512-UC0qFwyAjn4YdPpKaDNw6gNxRf7Mcx7jC1UGCY4boCzgvU2Aoc1mOGzTtrjjLKhM5ivsnhoKpQVxKPp+1j1qwg==
 
 minimatch@^3.0.4:
   version "3.0.4"
@@ -173,12 +204,14 @@ rimraf@^2.6.2:
   dependencies:
     glob "^7.0.5"
 
-serverless-python-requirements@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/serverless-python-requirements/-/serverless-python-requirements-4.0.4.tgz#52b45612f66e14392861a5bc2a209286b06578e6"
+serverless-python-requirements@^4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/serverless-python-requirements/-/serverless-python-requirements-4.2.5.tgz#1cb60847725c7bbcd92ffeb50391248faab3e03c"
+  integrity sha512-dmdgrSLWgJv2g/LIfFdBIkJFn2duNFRZc7De94AHf2ylZS7s+gKJ8Ga090YdaigWLhH65tMA50Ub06SUk0p6EQ==
   dependencies:
+    appdirectory "^0.1.0"
     bluebird "^3.0.6"
-    fs-extra "^6.0.0"
+    fs-extra "^7.0.0"
     glob-all "^3.1.0"
     is-wsl "^1.1.0"
     jszip "^3.1.0"
@@ -186,7 +219,19 @@ serverless-python-requirements@^4.0.4:
     lodash.set "^4.3.2"
     lodash.uniqby "^4.0.0"
     lodash.values "^4.3.0"
+    md5-file "^4.0.0"
     rimraf "^2.6.2"
+    shell-quote "^1.6.1"
+
+shell-quote@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.6.1.tgz#f4781949cce402697127430ea3b3c5476f481767"
+  integrity sha1-9HgZSczkAmlxJ0MOo7PFR29IF2c=
+  dependencies:
+    array-filter "~0.0.0"
+    array-map "~0.0.0"
+    array-reduce "~0.0.0"
+    jsonify "~0.0.0"
 
 string_decoder@~0.10.x:
   version "0.10.31"

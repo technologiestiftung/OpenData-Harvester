@@ -5,7 +5,8 @@
   "repository": "git@github.com:CivicVision/opendata-berlin.git",
   "author": "milafrerichs <mila.frerichs@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "serverless-python-requirements": "^4.0.4"
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-python-requirements": "^4.2.5"
   }
 }
