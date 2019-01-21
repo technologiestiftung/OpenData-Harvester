@@ -9,7 +9,7 @@ import simplejson as json
 from sqlalchemy import types
 from six import string_types, text_type
 
-import meta
+from .meta_helper import engine_is_sqlite
 
 __all__ = ['iso_date_to_datetime_for_sqlite', 'make_uuid', 'UuidType',
            'JsonType', 'JsonDictType']
@@ -90,7 +90,7 @@ def iso_date_to_datetime_for_sqlite(datetime_or_iso_date_if_sqlite):
     # to call this to convert it into a datetime type. When running on
     # postgres then you have a datetime anyway, so this function doesn't
     # do anything.
-    if meta.engine_is_sqlite() and isinstance(datetime_or_iso_date_if_sqlite, string_types):
+    if engine_is_sqlite() and isinstance(datetime_or_iso_date_if_sqlite, string_types):
         return datetime.datetime.strptime(datetime_or_iso_date_if_sqlite,
                                           '%Y-%m-%d %H:%M:%S.%f')
     else:
