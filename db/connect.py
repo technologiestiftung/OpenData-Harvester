@@ -13,4 +13,4 @@ url = 'postgresql://{}:{}@{}:{}/{}'
 url = url.format(user, password, host, port, db)
 
 def get_connection():
-    return sqlalchemy.create_engine(url, client_encoding='utf8')
+    return sqlalchemy.create_engine(url, client_encoding='utf8', connect_args={'connect_timeout': 10})
