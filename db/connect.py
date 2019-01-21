@@ -1,6 +1,6 @@
 import sqlalchemy
 
-import models.meta
+import models.meta_helper
 import models.tables
 import settings
 

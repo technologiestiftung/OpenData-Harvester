@@ -1,10 +1,10 @@
-import vdm.sqlalchemy
+#import vdm.sqlalchemy
 from sqlalchemy.orm import relation
 from sqlalchemy import types, Column, Table, ForeignKey, and_, UniqueConstraint
 import datetime
 
-import meta
-import types as _types
+from .meta_helper import metadata
+from .types import make_uuid, JsonDictType
 
 PACKAGE_NAME_MAX_LENGTH = 100
 PACKAGE_NAME_MIN_LENGTH = 2
@@ -16,8 +16,8 @@ MIN_TAG_LENGTH = 2
 VOCABULARY_NAME_MIN_LENGTH = 2
 VOCABULARY_NAME_MAX_LENGTH = 100
 
-package_table = Table('package', meta.metadata,
-        Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+package_table = Table('package', metadata,
+        Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
         Column('name', types.Unicode(PACKAGE_NAME_MAX_LENGTH),
                nullable=False, unique=True),
         Column('title', types.UnicodeText),
@@ -51,9 +51,9 @@ package_table = Table('package', meta.metadata,
 )
 
 resource_table = Table(
-    'resource', meta.metadata,
+    'resource', metadata,
     Column('id', types.UnicodeText, primary_key=True,
-           default=_types.make_uuid),
+           default=make_uuid),
     Column('package_id', types.UnicodeText,
            ForeignKey('package.id')),
     Column('url', types.UnicodeText, nullable=False),
@@ -73,30 +73,30 @@ resource_table = Table(
     Column('url_type', types.UnicodeText),
     Column('Abteilung', types.UnicodeText),
     Column('Landesstelle', types.UnicodeText),
-    Column('extras', _types.JsonDictType),
+    Column('extras', JsonDictType),
 )
 
-tag_table = Table('tag', meta.metadata,
-    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+tag_table = Table('tag', metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
     Column('name', types.Unicode(MAX_TAG_LENGTH), nullable=False),
     Column('vocabulary_id',
         types.Unicode(VOCABULARY_NAME_MAX_LENGTH))
 )
 
-package_tag_table = Table('package_tag', meta.metadata,
-    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+package_tag_table = Table('package_tag', metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
     Column('package_id', types.UnicodeText, ForeignKey('package.id')),
     Column('tag_id', types.UnicodeText, ForeignKey('tag.id')),
     )
 
-package_group_table = Table('package_group', meta.metadata,
-    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+package_group_table = Table('package_group', metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
     Column('package_id', types.UnicodeText, ForeignKey('package.id')),
     Column('group_id', types.UnicodeText, ForeignKey('group.id')),
     )
 
-group_table = Table('group', meta.metadata,
-    Column('id', types.UnicodeText, primary_key=True, default=_types.make_uuid),
+group_table = Table('group', metadata,
+    Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
     Column('name', types.UnicodeText, nullable=False, unique=True),
     Column('title', types.UnicodeText),
     Column('display_name', types.UnicodeText),
