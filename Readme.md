@@ -1,6 +1,8 @@
 
 # Open Data Berlin
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/technologiestiftung/OpenData-Harvester.svg)](https://greenkeeper.io/)
+
 This project collects the metadata of CKAN based Open Data Portals. In this specific case the metadata for the Berlin Open Data Portal. And saves them into a database as is for further analysis.
 
 # Testing
