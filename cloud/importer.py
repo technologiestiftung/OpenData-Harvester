@@ -1,3 +1,8 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
+
 import boto3
 
 from opendata import importer, ckan
@@ -6,12 +11,12 @@ import json
 def call_step_function():
     client = boto3.client('stepfunctions')
     response = client.start_execution(
-        stateMachineArn='arn:aws:states:eu-central-1:312231911072:stateMachine:OpendataLoadStateStepFunctionsStateMachine-3OzRc0Gzlk5J'
+        stateMachineArn=os.getenv("STATE_MACHINE")
     )
 
 def load_package(client, data):
     client.invoke(
-        FunctionName='opendata-harvester5-production-import',
+        FunctionName = os.getenv("SERVICE_NAME") + '-' + os.getenv("SERVICE_STATE") + '-import',
         Payload = data
     )
     return {}

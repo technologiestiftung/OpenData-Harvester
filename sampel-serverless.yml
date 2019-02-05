@@ -1,11 +1,43 @@
-service: opendata-berlin
+service: ${NAME}
 
 provider:
   name: aws
-  runtime: python2.7
-  profile: prototypefund
-  region: eu-central-1
+  runtime: python3.6
+  profile: ${PROFILE}
+  region: ${REGION}
+  # vpc:
+  #   securityGroupIds:
+  #     - sg-${SECURITY-GROUP-ID}
+  #   subnetIds:
+  #     - subnet-${SUBNET-IDs}
+  #     - subnet-${SUBNET-IDs}
   timeout: 300
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "states:StartExecution"
+      Resource:
+        - "*"
+    - Effect: Allow
+      Action:
+        - "ec2:CreateNetworkInterface"
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+        - lambda:InvokeAsync
+      Resource: "*"
+  environment:
+    DB_USER: ${DB_USER}
+    DB_PASSWORD: ${DB_PASSWORD}
+    DB_HOST: ${DB_PASSWORD}
+    DB_NAME: ${DB_NAME}
+    DB_PORT: 5432
+    API_KEY: ${API_KEY}
+    API_URL: ${API_URL}
+    STATE_MACHINE: ${ARN::STATE_MACHINE}
+    SERVICE_NAME: ${NAME}
+    SERVICE_STAGE: ${STAGE}
 
 package:
   include:
@@ -21,15 +53,57 @@ package:
 
 functions:
   load:
+    timeout: 300
     handler: handler.load_data
+    events:
+      - schedule: rate(7 days)
   import:
     handler: handler.import_package
   create_db:
     handler: handler.create_db
+    events:
+      - http: GET create_db
+
+stepFunctions:
+  stateMachines:
+    opendataLoadState:
+      definition:
+        Comment: "Processing the OpenData packages and inserting them into the database one at a time."
+        StartAt: ConfigureState
+        States:
+          ConfigureState:
+            Type: Pass
+            Result:
+              index: 0
+              api_key: ${API_KEY}
+              url: ${API_URL}
+              city_name: ${CITY_NAME}
+            ResultPath: $.iterator
+            Next: Iterator
+          Iterator:
+            Type: Task
+            Resource: ${ARN::IMPORT-FUNCTION}
+            ResultPath: $.iterator
+            Next: IsCountReached
+          IsCountReached:
+            Type: Choice
+            Choices:
+            - Variable: $.iterator.continue
+              BooleanEquals: true
+              Next: Iterator
+            - Variable: $.iterator.continue
+              BooleanEquals: false
+              Next: Done
+            Default: Done
+          Done:
+            Type: Pass
+            End: true
+
 
 plugins:
   - serverless-python-requirements
-
+  - serverless-step-functions
+  - serverless-pseudo-parameters
 custom:
   pythonRequirements:
     dockerizePip: non-linux
