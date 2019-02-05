@@ -2,48 +2,47 @@ from cloud import importer
 from db import connect
 import models
 import json
+from opendata import ckan
 
 def load_data(event, context):
-    city = event['city_name']
-    url = event['url']
-    apikey = event['api_key']
-    importer.load_data(city, url, apikey)
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
-    }
+    importer.call_step_function()
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": "load_data: step function initiated"
     }
 
     return response
 
 def import_package(event, context):
-    package_id = event['package_id']
-    url = event['url']
-    apikey = event['api_key']
-    result = importer.import_package(package_id, url, apikey)
-    body = {
-        "message": "import for package id",
-        "package_id": package_id,
-        "input": event,
-        "result": result
-    }
+    url = event['iterator']['url']
+    apikey = event['iterator']['api_key']
+    city = event['iterator']['city_name']
+    index = event['iterator']['index']
+
+    packages = ckan.gatherCity(city, url, apikey)
+
+    package_id = packages[index]
+
+    importer.import_package(package_id, url, apikey)
+
+    index += 1
 
     response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
+        "url":url,
+        "api_key":apikey,
+        "city_name":city,
+        "index": index,
+        "continue": index < len(packages)
     }
 
     return response
 
 def create_db(event, context):
     con = connect.get_connection()
-    result = models.meta_helper.metadata.create_all(con)
+    models.meta_helper.metadata.create_all(con)
     return {
         "statusCode": 200,
-        "body": json.dumps(result)
+        "body": "create_db: database created"
     }
 

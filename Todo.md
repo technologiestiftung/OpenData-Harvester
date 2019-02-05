@@ -1,0 +1,2 @@
+- the script currently overwrites changes of packages, there should be a history of package changes
+- the script does not track when packages are not available anymore

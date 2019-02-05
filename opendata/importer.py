@@ -15,7 +15,7 @@ def exclude_from_dict(d, exclude):
 
 def insert_or_update(table, entry, unique_id, exclude):
     con = connect.get_connection()
-    table = models.meta.metadata.tables[table]
+    table = models.meta_helper.metadata.tables[table]
     clause = insert(table).values(exclude_from_dict(entry, exclude))
     do_update_clause = clause.on_conflict_do_update(
         index_elements=[unique_id],
