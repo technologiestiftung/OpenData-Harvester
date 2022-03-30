@@ -9,6 +9,17 @@
   "imageSize": 64,
   "commit": true,
   "commitConvention": "angular",
-  "contributors": [],
+  "contributors": [
+    {
+      "login": "milafrerichs",
+      "name": "Mila Frerichs",
+      "avatar_url": "https://avatars.githubusercontent.com/u/688980?v=4",
+      "profile": "http://milafrerichs.com/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
   "contributorsPerLine": 7
 }
